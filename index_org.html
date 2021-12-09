@@ -2,16 +2,11 @@
 <html>
     <head>
         <link rel="stylesheet" href="style.css" />
-        <!-- Go to www.addthis.com/dashboard to customize your tools -->
-        <script
-            type="text/javascript"
-            src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-61b15d4b49ae7d6c"
-        ></script>
     </head>
     <body>
-        <!-- <div>Teachable Machine Image Model</div> -->
-        <!-- <button type="button" onclick="init()">Start</button> -->
-        <!-- <button type="button" onclick="predict()">예측</button> -->
+        <div>Teachable Machine Image Model</div>
+        <button type="button" onclick="init()">Start</button>
+        <button type="button" onclick="predict()">예측</button>
 
         <script
             class="jsbin"
@@ -39,22 +34,16 @@
             </div>
             <div class="file-upload-content">
                 <img class="file-upload-image" id="face-image" src="#" alt="your image" />
-                <p class="result-message"></p>
-
-                <div id="label-container"></div>
                 <div class="image-title-wrap">
                     <button type="button" onclick="removeUpload()" class="remove-image">
                         Remove <span class="image-title">Uploaded Image</span>
                     </button>
                 </div>
             </div>
-
-            <!-- Go to www.addthis.com/dashboard to customize your tools -->
-            <div class="addthis_inline_share_toolbox_te9p"></div>
         </div>
 
         <div id="webcam-container"></div>
-
+        <div id="label-container"></div>
         <div id="disqus_thread"></div>
         <script>
             /**
@@ -95,11 +84,6 @@
                     };
 
                     reader.readAsDataURL(input.files[0]);
-                    init().then(function () {
-                        console.log('hello');
-                        predict();
-                    });
-                    //predict();
                 } else {
                     removeUpload();
                 }
@@ -168,30 +152,6 @@
                 //const prediction = await model.predict(webcam.canvas);
                 var image = document.getElementById('face-image');
                 const prediction = await model.predict(image, false);
-                prediction.sort((a, b) => parseFloat(b.probability) - parseFloat(a.probability));
-                console.log(prediction[0].className);
-                var resultMessage;
-                switch (prediction[0].className) {
-                    case 'dog':
-                        resultMessage = '강아지상';
-                        break;
-                    case 'cat':
-                        resultMessage = '고양이상';
-                        break;
-                    case 'rabbit':
-                        resultMessage = '토끼상';
-                        break;
-                    case 'dinosaur':
-                        resultMessage = '공룡상';
-                        break;
-                    case 'bear':
-                        resultMessage = '곰상';
-                        break;
-                    default:
-                        resultMessage = '알수없음';
-                        break;
-                }
-                $('.result-message').html(resultMessage);
                 for (let i = 0; i < maxPredictions; i++) {
                     const classPrediction =
                         prediction[i].className + ': ' + prediction[i].probability.toFixed(2);
